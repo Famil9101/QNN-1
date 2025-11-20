@@ -44,6 +44,7 @@ from qiskit_aer.primitives import EstimatorV2
 
 from qiskit_machine_learning.neural_networks import EstimatorQNN
 from qiskit_machine_learning.algorithms import NeuralNetworkRegressor
+from qiskit_algorithms.optimizers import COBYLA, SPSA
 from qiskit_algorithms.optimizers import ADAM
 from qiskit.circuit.library import TwoLocal, ZFeatureMap
 from qiskit import QuantumCircuit, transpile
@@ -185,7 +186,8 @@ qnn = EstimatorQNN(
     gradient=gradient
 )
 
-optimizer = ADAM(maxiter=100, lr=0.1)
+optimizer = COBYLA(maxiter=300, tol=1e-6)
+# optimizer = ADAM(maxiter=300, lr=0.1)
 
 # ============ treniranje po svakom broju ============
 
@@ -204,7 +206,8 @@ for i in range(7):
 
     regressor = NeuralNetworkRegressor(
         neural_network=qnn,
-        optimizer=optimizer,
+        # optimizer=optimizer,
+        optimizer = SPSA(maxiter=300),
         loss='squared_error'
     )
 
